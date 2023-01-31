@@ -22,3 +22,4 @@ func main() {
 		fmt.Println("No")
 	}
 }
+非負整数
