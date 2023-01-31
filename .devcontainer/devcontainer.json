@@ -8,7 +8,9 @@
       "settings": {
         "go.toolsManagement.checkForUpdates": "local",
         "go.useLanguageServer": true,
-        "go.gopath": "/go"
+        "go.gopath": "/go",
+        "editor.tabSize": 4,
+        "editor.insertSpaces": false
       },
       "extensions": [
         "golang.Go"
