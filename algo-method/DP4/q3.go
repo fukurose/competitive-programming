@@ -19,6 +19,9 @@ func init() {
 	scanner.Split(bufio.ScanWords)
 }
 
+var even int = 0
+var odd int = 1
+
 func main() {
 	n := scanInt()
 	m := scanInt()
@@ -27,55 +30,41 @@ func main() {
 		w[i] = scanInt()
 	}
 
-	dp := make([][]bool, n)
-	judge := make([][]int, n)
+	dp := make([][][2]bool, n)
 	for i := range dp {
-		dp[i] = make([]bool, m+1)
-		judge[i] = make([]int, m+1)
+		dp[i] = make([][2]bool, m+1)
 		for j := range dp[i] {
-			judge[i][j] = 0b10
-
+			dp[i][j] = [2]bool{}
 		}
 	}
 
-	dp[0][0] = true
+	// ボールを取らない場合
+	dp[0][0][even] = true
+
+	// ボールを取る場合
 	if w[0] <= m {
-		dp[0][w[0]] = true
-		judge[0][w[0]] = 0b01
+		dp[0][w[0]][odd] = true
 	}
 
-	for i := 1; i < n; i++ {
+	for i := 0; i < n-1; i++ {
 		for j := range dp[i] {
-			if !dp[i-1][j] {
-				continue
-			}
-
-			// ボールを取らない場合
-			if dp[i][j] {
-				judge[i][j] = judge[i][j] | judge[i-1][j]
-			} else {
-				judge[i][j] = judge[i-1][j]
-			}
-			dp[i][j] = true
-
-			// ボールを取る場合
-			if j+w[i] <= m {
-				prev := judge[i-1][j]
-				now := prev ^ 0b11
-				if prev == 0b11 {
-					now = 0b11
+			for k := range dp[i][j] {
+				if !dp[i][j][k] {
+					continue
 				}
-				if dp[i][j+w[i]] {
-					judge[i][j+w[i]] = judge[i][j+w[i]] | now
-				} else {
-					judge[i][j+w[i]] = now
+
+				// ボールを取らない場合
+				dp[i+1][j][k] = true
+
+				// ボールを取る場合
+				if j+w[i+1] <= m {
+					dp[i+1][j+w[i+1]][(k+1)%2] = true
 				}
-				dp[i][j+w[i]] = true
 			}
 		}
 	}
 
-	if judge[n-1][m]&(1<<0) != 0 {
+	if dp[n-1][m][odd] {
 		fmt.Println("Yes")
 	} else {
 		fmt.Println("No")
