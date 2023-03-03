@@ -63,16 +63,17 @@ func main() {
 			if dp[i-1][j] < 0 {
 				continue
 			}
-			dp[i][j] = dp[i-1][j]
+			dp[i][j] = max(dp[i][j], dp[i-1][j])
 			if j+tasks[i].time <= tasks[i].limit {
-				dp[i][j+tasks[i].time] = dp[i-1][j] + 1
+				dp[i][j+tasks[i].time] = max(dp[i][j+tasks[i].time], dp[i-1][j]+1)
 			}
 		}
 	}
 
 	ans := 0
-	for i := range dp[n-1] {
-		ans = max(ans, dp[n-1][i])
+	for _, v := range dp[n-1] {
+		ans = max(ans, v)
 	}
+
 	fmt.Println(ans)
 }
