@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 )
@@ -27,21 +28,12 @@ func max(a, b int) int {
 	if a > b {
 		return a
 	} else {
-
 		return b
 	}
 }
 
-func main() {
-	n := scanInt()
-	x := scanInt()
+func isOK(x, n, k int, sum []int) bool {
 	dp := make([]int, n+1)
-	sum := make([]int, n+1)
-	a := make([]int, n)
-	for i := range a {
-		a[i] = scanInt()
-		sum[i+1] = sum[i] + a[i]
-	}
 
 	for i := 0; i < n; i++ {
 		for j := 0; j <= i; j++ {
@@ -54,5 +46,31 @@ func main() {
 		}
 	}
 
-	fmt.Println(dp[n])
+	return dp[n] >= k
+
+}
+
+func main() {
+	n := scanInt()
+	k := scanInt()
+	sum := make([]int, n+1)
+	a := make([]int, n)
+	for i := range a {
+		a[i] = scanInt()
+		sum[i+1] = sum[i] + a[i]
+	}
+
+	start := 0
+	end := 99999999
+	mid := (start + end) / 2
+
+	for math.Abs(float64(start-end)) > 1 {
+		if isOK(mid, n, k, sum) {
+			start = mid
+		} else {
+			end = mid
+		}
+		mid = (start + end) / 2
+	}
+	fmt.Println(mid)
 }
