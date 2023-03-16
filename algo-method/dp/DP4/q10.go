@@ -38,39 +38,45 @@ func main() {
 	s := scanString()
 	l := len(s)
 	a := scanInt()
+	b := scanInt()
 
-	dp := make([][][]int, l)
+	dp := make([][][][]int, l)
 	for i := range dp {
-		dp[i] = make([][]int, a)
+		dp[i] = make([][][]int, a)
 		for j := range dp[i] {
-			dp[i][j] = make([]int, 2)
+			dp[i][j] = make([][]int, b)
+			for k := range dp[i][j] {
+				dp[i][j][k] = make([]int, 2)
+			}
 		}
 	}
 
 	first := Atoi(string(s[0]))
 	for i := 0; i < 10; i++ {
 		if i < first {
-			dp[0][i%a][1]++
+			dp[0][i%a][i%b][1]++
 		} else if i == first {
-			dp[0][i%a][0]++
+			dp[0][i%a][i%b][0]++
 		}
 	}
 
 	for i := 1; i < l; i++ {
 		n := Atoi(string(s[i]))
 		for j := 0; j < a; j++ {
-			for k := 0; k < 10; k++ {
-				if k < n {
-					dp[i][(j+k)%a][1] += (dp[i-1][j][0] + dp[i-1][j][1])
-				} else if k == n {
-					dp[i][(j+k)%a][0] += dp[i-1][j][0]
-					dp[i][(j+k)%a][1] += dp[i-1][j][1]
-				} else {
-					dp[i][(j+k)%a][1] += dp[i-1][j][1]
+			for k := 0; k < b; k++ {
+				for l := 0; l < 10; l++ {
+					if l < n {
+						dp[i][(j+l)%a][(k*10+l)%b][1] += (dp[i-1][j][k][0] + dp[i-1][j][k][1])
+					} else if l == n {
+						dp[i][(j+l)%a][(k*10+l)%b][0] += dp[i-1][j][k][0]
+						dp[i][(j+l)%a][(k*10+l)%b][1] += dp[i-1][j][k][1]
+					} else {
+						dp[i][(j+l)%a][(k*10+l)%b][1] += dp[i-1][j][k][1]
+					}
 				}
 			}
 		}
 	}
 
-	fmt.Println(dp[l-1][0][0] + dp[l-1][0][1] - 1)
+	fmt.Println(dp[l-1][0][0][0] + dp[l-1][0][0][1] - 1)
 }
