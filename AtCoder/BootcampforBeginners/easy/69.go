@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 var scanner = bufio.NewScanner(os.Stdin)
@@ -29,26 +30,20 @@ func init() {
 	scanner.Split(bufio.ScanWords)
 }
 
-func f(m int, arr []int) int {
-
-	ans := 0
-	for i := range arr {
-		ans += m % arr[i]
-	}
-	return ans
-}
-
 func main() {
-	n := scanInt()
-	arr := make([]int, n)
+	s := scanString()
+	arr := strings.Split(s, "")
 
-	for i := range arr {
-		arr[i] = scanInt()
-	}
-
+	pre := ""
+	cur := ""
 	ans := 0
-	for _, v := range arr {
-		ans += (v -1)
+	for _, r := range arr {
+		cur += string(r)
+		if pre != cur {
+			pre = cur
+			cur = ""
+			ans++
+		}
 	}
 
 	fmt.Println(ans)

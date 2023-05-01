@@ -29,26 +29,32 @@ func init() {
 	scanner.Split(bufio.ScanWords)
 }
 
-func f(m int, arr []int) int {
-
-	ans := 0
-	for i := range arr {
-		ans += m % arr[i]
+func max(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
 	}
-	return ans
 }
 
 func main() {
 	n := scanInt()
-	arr := make([]int, n)
+	blueMap := make(map[string]int, n)
 
-	for i := range arr {
-		arr[i] = scanInt()
+	for i := 0; i < n; i++ {
+		blueMap[scanString()]++
+	}
+
+	m := scanInt()
+	redMap := make(map[string]int, m)
+
+	for i := 0; i < m; i++ {
+		redMap[scanString()]++
 	}
 
 	ans := 0
-	for _, v := range arr {
-		ans += (v -1)
+	for k, v := range blueMap {
+		ans = max(ans, v-redMap[k])
 	}
 
 	fmt.Println(ans)

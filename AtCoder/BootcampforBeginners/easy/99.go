@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 )
@@ -29,27 +30,11 @@ func init() {
 	scanner.Split(bufio.ScanWords)
 }
 
-func f(m int, arr []int) int {
-
-	ans := 0
-	for i := range arr {
-		ans += m % arr[i]
-	}
-	return ans
-}
-
 func main() {
 	n := scanInt()
-	arr := make([]int, n)
+	k := scanInt()
 
-	for i := range arr {
-		arr[i] = scanInt()
-	}
-
-	ans := 0
-	for _, v := range arr {
-		ans += (v -1)
-	}
-
+	ans := int(math.Pow(float64(k-1), float64(n-1)))
+	ans *= k
 	fmt.Println(ans)
 }

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 )
 
@@ -29,27 +30,29 @@ func init() {
 	scanner.Split(bufio.ScanWords)
 }
 
-func f(m int, arr []int) int {
-
-	ans := 0
-	for i := range arr {
-		ans += m % arr[i]
-	}
-	return ans
+func isAllSame(arr []int) bool {
+	return arr[0] == arr[1] && arr[1] == arr[2]
 }
 
 func main() {
-	n := scanInt()
-	arr := make([]int, n)
+	arr := make([]int, 3)
 
 	for i := range arr {
 		arr[i] = scanInt()
 	}
 
 	ans := 0
-	for _, v := range arr {
-		ans += (v -1)
+	for !isAllSame(arr) {
+		sort.Ints(arr)
+		diff := arr[2] - arr[0]
+		if diff >= 2 {
+			arr[0] += 2
+		} else {
+			arr[0]++
+			arr[1]++
+		}
+		ans++
 	}
-
 	fmt.Println(ans)
+
 }

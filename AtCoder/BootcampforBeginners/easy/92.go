@@ -29,27 +29,28 @@ func init() {
 	scanner.Split(bufio.ScanWords)
 }
 
-func f(m int, arr []int) int {
-
-	ans := 0
-	for i := range arr {
-		ans += m % arr[i]
+func min(a, b int) int {
+	if a > b {
+		return b
+	} else {
+		return a
 	}
-	return ans
 }
 
 func main() {
-	n := scanInt()
-	arr := make([]int, n)
+	cube := scanString()
 
-	for i := range arr {
-		arr[i] = scanInt()
+	zeroCount := 0
+	oneCount := 0
+
+	for _, r := range cube {
+		if string(r) == "0" {
+			zeroCount++
+		} else {
+			oneCount++
+		}
 	}
+	deleteCount := min(zeroCount, oneCount)
+	fmt.Println(deleteCount * 2)
 
-	ans := 0
-	for _, v := range arr {
-		ans += (v -1)
-	}
-
-	fmt.Println(ans)
 }

@@ -29,27 +29,40 @@ func init() {
 	scanner.Split(bufio.ScanWords)
 }
 
-func f(m int, arr []int) int {
-
-	ans := 0
-	for i := range arr {
-		ans += m % arr[i]
+func min(a, b int) int {
+	if a > b {
+		return b
+	} else {
+		return a
 	}
-	return ans
+}
+
+func diff(a, b int) int {
+	if a > b {
+		return a - b
+	} else {
+		return b - a
+	}
 }
 
 func main() {
-	n := scanInt()
-	arr := make([]int, n)
+	size := scanInt()
+	arr := make([]int, size)
 
+	leftSum := 0
+	rightSum := 0
 	for i := range arr {
 		arr[i] = scanInt()
+		rightSum += arr[i]
 	}
 
-	ans := 0
+	d := rightSum
 	for _, v := range arr {
-		ans += (v -1)
+		leftSum += v
+		rightSum -= v
+
+		d = min(d, diff(leftSum, rightSum))
 	}
 
-	fmt.Println(ans)
+	fmt.Println(d)
 }
