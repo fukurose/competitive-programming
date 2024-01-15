@@ -1,6 +1,6 @@
 {
   "name": "go",
-  "image": "golang",
+  "image": "golang:1.20-alpine",
   "workspaceFolder": "/go",
   "workspaceMount": "source=${localWorkspaceFolder},target=/go/app,type=bind,consistency=cached",
   "customizations": {
